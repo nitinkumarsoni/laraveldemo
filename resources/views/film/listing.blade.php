@@ -8,6 +8,7 @@
                 <div class="panel-heading">Films</div>
 
                 <div class="panel-body">
+                    <div id="fims-listing"></div>
                     
                 </div>
             </div>
@@ -15,3 +16,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/films.js') }}"></script>
+@endpush

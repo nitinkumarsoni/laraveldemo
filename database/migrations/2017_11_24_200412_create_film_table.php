@@ -24,7 +24,7 @@ class CreateFilmTable extends Migration
             $table->double('ticket_price')->default(0.0)->nullable();
             $table->string('country', 250);
             $table->text('genre');
-            $table->string('photo', 250);
+            $table->string('photo', 250)->nullable()->default(null);
             $table->timestamps();
         });
     }
