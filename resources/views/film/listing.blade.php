@@ -9,7 +9,7 @@
 
                 <div class="panel-body">
                     <div id="fims-listing"></div>
-                    
+                    <div class="text-center" id="film-loader" style="display: none;"><img src="img/loader.gif"/></div>
                 </div>
             </div>
         </div>
