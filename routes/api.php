@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('films', 'Api\FilmController@listing');
 Route::post('film', 'Api\FilmController@addFilm')->middleware('auth:api');
 Route::post('comment', 'Api\CommentController@addComent')->middleware('auth:api');
+Route::get('comment', 'Api\CommentController@listing');

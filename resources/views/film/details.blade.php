@@ -36,6 +36,13 @@
                                 </div>
                             </div>
                         </form>
+                        <hr class="hr-primary"/>
+                        <div id="comments-listing">
+                            <div class="text-center" id="comment-loader" style="display: none;"><img src="{{ url('img/loader.gif') }}"/></div>
+                        </div>
+                        <div class="text-center" id="load-comment-btn">
+                            <button class="btn btn-primary" onclick="loadFilmComments('{{ $film->guid }}');">Load More</button>
+                        </div>
                     </div>
                     @endif
                 </div>
@@ -53,6 +60,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
     addFilmComment();
+    loadFilmComments('{{ $film->guid }}')
 });
 </script>
 @endpush

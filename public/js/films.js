@@ -6,7 +6,13 @@
 
 var api_url = site_url + 'api/'
 var page = 1
-
+var commentPageNo = 1;
+var commentsLoaded = 0;
+var totalComments = 0;
+/**
+ * Get films list
+ * @returns {undefined}
+ */
 function getFilmList() {
     $.ajax({
         url: api_url + 'films?page=' + page,
@@ -33,7 +39,10 @@ function getFilmList() {
         }
     });
 }
-
+/**
+ * 
+ * @returns {undefined}
+ */
 function addFilmComment() {
     $('#film-comment').on('submit', function (e) {
         e.preventDefault();
@@ -54,7 +63,7 @@ function addFilmComment() {
             $('#comment').parents('.form-group').removeClass('has-error');
         }
         if (error === false) {
-            var formData = {name: name, comment: comment, film_guid:film_guid};
+            var formData = {name: name, comment: comment, film_guid: film_guid};
             $.ajax({
                 url: api_url + 'comment',
                 type: "post",
@@ -81,6 +90,11 @@ function addFilmComment() {
         }
     });
 }
+
+/**
+ * 
+ * @returns {undefined}
+ */
 function addFilm() {
     $('#create-film').on('submit', function (e) {
         e.preventDefault();
@@ -167,14 +181,13 @@ function addFilm() {
                 },
                 beforeSend: function ()
                 {
-                    $('#comment-loader').show();
+                    $('#film-loader').show();
                 }
             }).done(function (response) {
-                console.log(response)
                 $('#film-loader').hide();
                 if (response.response_code == 200) {
                     alert(response.message);
-                    window.location = site_url+'films'
+                    window.location = site_url + 'films'
                 } else {
                     alert(response.message);
                 }
@@ -182,12 +195,58 @@ function addFilm() {
         }
     });
 }
-
+/**
+ * 
+ * @param {type} file
+ * @returns {Promise}
+ */
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
+    });
+}
+
+/**
+ * 
+ * @returns {undefined}
+ */
+function loadFilmComments(filmGuid) {
+    $.ajax({
+        url: api_url + 'comment?page=' + commentPageNo + '&film_guid=' + filmGuid,
+        type: "get",
+        datatype: "json",
+        beforeSend: function ()
+        {
+            $('#comment-loader').show();
+        }
+    }).done(function (response) {
+        $('#comment-loader').hide();
+        totalComments = response.total_records;
+        if (response.total_records == 0) {
+            var html = '<div class="alert alert-warning text-center">No commets added yet.</div>';
+            $('#comments-listing').html(html);
+        } else {
+            var html = '<ul class="list-unstyled">';
+            for (var i = 0; i < response.data.length; i++) {
+                html += '<li>';
+                html += '<p>' + response.data[i].description + '</p>';
+                html += '<b>' + response.data[i].name + '</b>';
+                html += ' on <b>' + response.data[i].created_at + '</b>';
+                html += '<hr />';
+                html += '</li>';
+            }
+            html += '</ul>';
+            commentsLoaded = commentsLoaded + parseInt(response.data.length);
+            commentPageNo++;
+            $('#comments-listing').append(html);
+
+            if (commentsLoaded >= totalComments) {
+
+                $('#load-comment-btn').hide();
+            }
+        }
     });
 }
