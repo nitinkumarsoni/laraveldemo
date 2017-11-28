@@ -18,5 +18,10 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/films.js') }}"></script>
+<script src="{{ asset('js/films.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    getFilmList(page);
+});
+</script>
 @endpush

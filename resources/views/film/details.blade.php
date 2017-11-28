@@ -16,7 +16,8 @@
                     @if (Auth::user())
                     <hr class="hr-primary"/>
                     <div class="">
-                        <form class="form-horizontal" action="" method="post">
+                        <form class="form-horizontal" action="" method="post" id="film-comment">
+                            <input type="hidden" id="film_guid" name="film_guid" value="{{ $film->guid }}" />
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Name</label>
                                 <div class="col-sm-10">
@@ -47,3 +48,11 @@
 
 </style>
 @endsection
+@push('scripts')
+<script src="{{ asset('js/films.js') }}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    addFilmComment();
+});
+</script>
+@endpush
